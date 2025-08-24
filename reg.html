@@ -5,7 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Patient</title>
     <link rel="stylesheet" href="tailwind.min.css">
-    <script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <div class="flex justify-center items-center min-h-screen space-x-10 px-4">
+        <!-- Search Patient Container -->
+        <div class="w-full max-w-lg p-8 bg-white shadow-xl rounded-xl border-t-8 border-blue-600">
+            <h2 class="text-3xl font-semibold text-center text-gray-800 mb-6">Search Patient</h2>
+            <input type="text" id="search" placeholder="Search by ID or Name" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" oninput="searchPatient()">
+            <div id="searchResults" class="mt-4 text-gray-700"></div>
+        </div>
+
+        <!-- Add New Patient Container -->
+        <div class="w-full max-w-lg p-8 bg-white shadow-xl rounded-xl border-t-8 border-green-600">
+            <h2 class="text-3xl font-semibold text-center text-gray-800 mb-6">Add New Patient</h2>
+            <form id="patientForm" class="space-y-6">
+                <input type="text" name="patientId" placeholder="Patient ID" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
+                <input type="text" name="patientName" placeholder="Full Name" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
+                <input type="date" name="dateOfBirth" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
+                <input type="date" name="dateOfAdmission" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
+                <select name="gender" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
+                    <option value="text">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+                <input type="number" id="height" name="height" placeholder="Height (cm)" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required oninput="calculateBMI()">
+                <input type="number" id="weight" name="weight" placeholder="Weight (kg)" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required oninput="calculateBMI()">
+                <input type="text" name="bloodType" placeholder="Blood Type" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
+                <select name="rhFactor" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
+                    <option value="text">Select Rh Factor</option>
+                    <option value="Positive">+</option>
+                    <option value="Negative">-</option>
+                </select>
+                <input type="text" id="bmi" name="bmi" placeholder="BMI" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" readonly>
+                 <button type="submit" class="w-full p-4 text-white bg-green-600 rounded-lg">Submit
+                 </button>
+            </form>
+        </div>
+    </div>
+<script>
+        // Function to calculate BMI based on height and weight
+        function calculateBMI() {
+            let height = document.getElementById('height').value;
+            let weight = document.getElementById('weight').value;
+            if (height && weight) {
+                let bmi = (weight / ((height / 100) ** 2)).toFixed(2);
+                document.getElementById('bmi').value = bmi;
+            } else {
+                document.getElementById('bmi').value = '';
+            }
+        }
+
+        // Function to search for a patient by ID or Name dynamically as the user types
+        function searchPatient() {
+            let searchValue = document.getElementById('search').value;
+            let searchResultsContainer = document.getElementById('searchResults');
+
+            // Clear previous search results
+            searchResultsContainer.innerHTML = '';
+
+            // If the search field is empty, don't proceed
+            if (searchValue.length < 1) return;
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "search_patient.php?query=" + searchValue, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    let response = xhr.responseText.trim();
+
+                    // If there are results, show them; otherwise, show no results
+                    if (response) {
+                        searchResultsContainer.innerHTML = response;
+                    } else {
+                        searchResultsContainer.innerHTML = "<p class='text-gray-500'>No results found.</p>";
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        <script>
         // Function to calculate BMI based on height and weight
         function calculateBMI() {
             let height = document.getElementById('height').value;
@@ -71,44 +150,5 @@
     }
 });
     </script>
-</head>
-<body class="bg-gray-50 font-sans">
-
-    <div class="flex justify-center items-center min-h-screen space-x-10 px-4">
-        <!-- Search Patient Container -->
-        <div class="w-full max-w-lg p-8 bg-white shadow-xl rounded-xl border-t-8 border-blue-600">
-            <h2 class="text-3xl font-semibold text-center text-gray-800 mb-6">Search Patient</h2>
-            <input type="text" id="search" placeholder="Search by ID or Name" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" oninput="searchPatient()">
-            <div id="searchResults" class="mt-4 text-gray-700"></div>
-        </div>
-
-        <!-- Add New Patient Container -->
-        <div class="w-full max-w-lg p-8 bg-white shadow-xl rounded-xl border-t-8 border-green-600">
-            <h2 class="text-3xl font-semibold text-center text-gray-800 mb-6">Add New Patient</h2>
-            <form id="patientForm" class="space-y-6">
-                <input type="text" name="patientId" placeholder="Patient ID" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
-                <input type="text" name="patientName" placeholder="Full Name" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
-                <input type="date" name="dateOfBirth" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
-                <input type="date" name="dateOfAdmission" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
-                <select name="gender" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
-                    <option value="text">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-                <input type="number" id="height" name="height" placeholder="Height (cm)" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required oninput="calculateBMI()">
-                <input type="number" id="weight" name="weight" placeholder="Weight (kg)" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required oninput="calculateBMI()">
-                <input type="text" name="bloodType" placeholder="Blood Type" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
-                <select name="rhFactor" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" required>
-                    <option value="text">Select Rh Factor</option>
-                    <option value="Positive">+</option>
-                    <option value="Negative">-</option>
-                </select>
-                <input type="text" id="bmi" name="bmi" placeholder="BMI" class="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" readonly>
-                 <button type="submit" class="w-full p-4 text-white bg-green-600 rounded-lg">Submit
-                 </button>
-            </form>
-        </div>
-    </div>
-
 </body>
 </html>
