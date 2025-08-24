@@ -4,5 +4,5 @@ compatibility_date = "2025-08-24"
 
 [[d1_databases]]
 binding = "DB"                   # это то, что используешь в коде (env.DB)
-database_name = "myp"            # имя твоей базы в Cloudflare
-database_id = "8918abda-4b32-4dce-bf9a-036daf2aca1e"  # твой databaseId
+database_name = "myp1"            # имя твоей базы в Cloudflare
+database_id = "2dd6ed6a-0480-4291-b47c-33cea5b90a5e"  # твой databaseId
