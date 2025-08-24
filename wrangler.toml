@@ -1,8 +1,8 @@
-name = "patient-api"
+name = "my-worker"
 main = "worker.js"
 compatibility_date = "2025-08-24"
 
 [[d1_databases]]
-binding = "myp"
-database_name = "myp"
-database_id = "8918abda-4b32-4dce-bf9a-036daf2aca1e"
+binding = "myp"          # имя, которое ты будешь использовать в коде
+database_name = "myp"    # имя базы, как ты её создал
+database_id = "8918abda-4b32-4dce-bf9a-036daf2aca1e" # возьми из Cloudflare Dashboard
