@@ -3,6 +3,6 @@ main = "worker.js"
 compatibility_date = "2025-08-24"
 
 [[d1_databases]]
-binding = "MYDB"
-database_name = "mydb"
-database_id = "45497e86-269a-4ae9-b3c4-8643f9848161"
+binding = "myp"
+database_name = "myp"
+database_id = "8918abda-4b32-4dce-bf9a-036daf2aca1e"
