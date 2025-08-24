@@ -46,12 +46,21 @@
             xhr.send();
         }
 
-        async function loadPatients() {
-  const response = await fetch("https://my-worker.your-subdomain.workers.dev");
-  const data = await response.json();
-  console.log(data); // здесь будут пациенты
-}
-loadPatients();
+        document.getElementById("patientForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const jsonData = Object.fromEntries(formData);
+
+    const response = await fetch("https://patient-api.yourname.workers.dev", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(jsonData)
+    });
+
+    const result = await response.json();
+    alert(result.status === "ok" ? "Patient added!" : "Error adding patient");
+});
     </script>
 </head>
 <body class="bg-gray-50 font-sans">
