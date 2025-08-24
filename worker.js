@@ -1,6 +1,6 @@
 export default {
   async fetch(request, env) {
-    const db = env.MYDB;
+    const db = env.myp;
 
     if (request.method === "POST") {
       const data = await request.json();
